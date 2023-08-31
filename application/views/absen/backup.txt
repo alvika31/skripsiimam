@@ -1,0 +1,461 @@
+if($this->input->post('masuk')){
+
+			$absen_harian = $this->Absensi_model->absen_harian_user($this->session->userdata('id_pegawai'))->num_rows();
+			$data = [
+				'tgl_absen' => date('Y-m-d'),
+				'jam_absen' => date('H:i:s'),
+				'keterangan_absen' => $this->input->post('keterangan_absen'),
+				'lat_absen' => $this->input->post('lat_absen'),
+				'long_absen' => $this->input->post('long_absen'),
+				'id_pegawai' => $this->session->id_pegawai,
+				'status_absen' => 'Masuk'
+				
+			];
+			$result = $this->db->insert('absensi', $data);
+			if($result == TRUE){
+				$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+					<div>
+					Selamat Absen Masuk Anda Sudah Dicatat
+					</div>
+				</div>');
+			}else{
+				$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+					<div>
+					Maaf, Data Anda Belum Dicatat
+					</div>
+				</div>');
+			}
+			redirect('absensi');
+
+
+		}elseif($this->input->post('pulang')){
+			$data = [
+				
+				'jam_absen_pulang' => date('H:i:s'),
+
+				
+			];
+			$id_absen = $this->input->post('id_absen');
+			$id_pegawai = $this->session->id_pegawai;
+			
+			$this->db->where('id_pegawai', $id_pegawai);
+			$result2 = $this->db->update('absensi', $data);
+
+			if($result2 == TRUE){
+				$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+					<div>
+					Selamat Absen Pulang Anda Sudah Dicatat
+					</div>
+				</div>');
+			}else{
+				$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+					<div>
+					Maaf, Data Anda Belum Dicatat
+					</div>
+				</div>');
+			}
+			redirect('absensi');
+		}
+
+
+
+
+?> 
+
+<main class="main-content position-relative border-radius-lg ">
+    <div class="container-fluid py-4">
+
+<div class="row" style="margin-bottom: 50px">
+    <div class="col text-center">
+    <div class="card" style="width:100%; padding-top: 30px;padding-bottom: 30px">
+        <div class="card-body">
+        <img src="<?= base_url() . '/upload/logo.png'?>" class="align-top" alt="..." width="150px">
+        <h3 class="card-subtitle mb-2 text-muted mt-3">Hallo, <?= $greeting?> <?php echo $this->session->userdata('nama_lengkap');?></h3>
+            <marquee style="marquee-speed: slow;"><p class="card-text">Jangan Lupa Absen Tepat Waktu ya!</p></marquee>
+           
+        </div>
+    </div>
+    </div>
+</div>
+<?php echo $this->session->flashdata('pesan');?>
+
+        <div class="row">
+
+            <div class="col">
+
+            <div class="card">
+            <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+            <b> Identitas Diri</b>
+            <hr>
+                
+            </div>
+
+            <div class="card-body pt-3">
+                <div class="author align-items-center">
+                    <div class="col align-self-start">
+                    <img src="<?= base_url() . '/upload/' . $this->session->userdata('image');?>" class="align-top" alt="..." width="150px">
+                    </div>
+                    <div class="col-8">
+                    <div class="name ps-3">
+                <span>Nama Lengkap:</span>
+                <div class="stats">
+                    <small><?php echo $this->session->userdata('nama_lengkap');?></small>
+                </div>
+                <span>Username:</span>
+                <div class="stats">
+                    <small><?php echo $this->session->userdata('username');?></small>
+                </div>
+                <span>User Type:</span>
+                <div class="stats">
+                <span class="badge badge-pill bg-gradient-primary"><small><?php echo $this->session->userdata('user_type');?></small></span>
+                </div>
+                <span>Umur:</span>
+                <div class="stats">
+                    <small><?php echo $this->session->userdata('umur');?></small>
+                </div>
+                <span>Kode Pegawai:</span>
+                <div class="stats">
+                    <small><?php echo $this->session->userdata('kode_pegawai');?></small>
+                </div>
+                <span>Jabatan:</span>
+                <div class="stats">
+                    <small><?php echo $this->session->userdata('jabatan');?></small>
+                </div>
+                <span>Tempat Tanggal Lahir:</span>
+                <div class="stats">
+                    <small><?php echo $this->session->userdata('tempat_lahir');?>, <?php echo $this->session->userdata('tgl_lahir');?></small>
+                </div>
+                <span>Jenis Kelamin:</span>
+                <div class="stats">
+                    <small><?php echo $this->session->userdata('jenis_kelamin');?></small>
+                </div>
+                   
+
+                    </div>
+               
+               
+                </div>
+                </div>
+            </div>
+            </div>
+
+            </div>
+
+            <div class="col">
+
+<div class="card">
+<div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+<b> Absensi</b>
+            <hr>
+            <label class="display-6"><?= $date?></label><br>
+    <label id="hours" class="display-6"><?= date('H') ?></label>:<label id="minutes" class="display-6"><?= date('i') ?></label>:<label id="seconds" class="display-6"><?= date('s') ?></label>
+  </div>
+
+
+<div class="card-body pt-2">
+
+
+    <form action="<?=site_url('absensi/absen')?>" method="post"> 
+     <?php  foreach($jam_m as $t_jam){?>  
+        <div class="input-group mb-4"> 
+        <select name="keterangan_absen" class="form-control">
+            <option value="Bekerja Di Kantor">Bekerja Di Kantor</option>
+            <option value="Bekerja Di Rumah / WFH">Bekerja Di Rumah / WFH</option>
+            <option value="Sakit">Sakit</option>
+            <option value="Cuti">Cuti</option>
+        </select>
+        </div>
+       
+        <input type="hidden" name="lat_absen" id="lat">
+        <input type="hidden" name="long_absen" id="long">
+
+        <?php if ($t_jam->keterangan == 'Masuk' ){ ?>
+        <?php if (time() > strtotime($t_jam->start) && time() < strtotime($t_jam->finish) ){ ?>
+
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+			<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+			  Absen Sudah Mulai
+			</div>
+
+                <button type="submit" href="<?= site_url('absensi/absen/masuk') ?>" class="btn bg-gradient-success
+                "<?= ($absen == 2 || $absen == 1) ? 'disabled style="cursor:not-allowed"' : 'Anda Sudah absen' ?>>Absen Masuk</button>
+        <?php } else { ?>
+
+            <div class="alert alert-danger d-flex align-items-center text-white" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            <div>
+                Absen Belum dimulai
+            </div>
+            </div>
+
+            <button disabled="" type="submit" href="<?= site_url('absensi/absen/masuk') ?>" class="btn bg-gradient-success"<?=$absen == 1 ? 'disabled style="cursor:not-allowed"' : 'Anda Sudah absen' ?>>Absen Masuk</button>
+        <?php } }?>
+
+        
+        <?php if ($t_jam->id_jam == 8 ){ ?>
+        <?php if (time() > strtotime($t_jam->start) && time() < strtotime($t_jam->finish) ){ ?>
+
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+			<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+			  Absen Sudah Mulai
+			</div>
+                <button type="submit" href="<?= site_url('absensi/absen/pulang') ?>" class="btn bg-gradient-danger"
+                <?= ($absen !== 1 || $absen == 2) ? 'disabled style="cursor:not-allowed"' : 'Anda Sudah Absen' ?>>Absen Pulang</button>
+        <?php } else { ?>
+
+            <div class="alert alert-danger d-flex align-items-center text-white" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            <div>
+                Absen Belum dimulai
+            </div>
+            </div>
+            <button disabled="" type="submit" href="<?= site_url('absensi/absen/pulang') ?>" class="btn bg-gradient-danger"
+            <?= ($absen !== 1 || $absen == 2) ? 'disabled style="cursor:not-allowed"' : 'Anda Sudah Absen' ?>>Absen Pulang</button>
+
+        <?php } }?>
+
+        
+
+
+        <!--  -->
+        <?php }
+        ?>
+       
+        
+        
+        </form>
+        <table border="0px">
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            
+            <tr>
+            <?php $i=1; foreach($jam as $jam) { ?> 
+                <td><b><?=$jam->keterangan?>:</b> </td>
+                <td><?=$jam->start?> - </td>
+                <td><?=$jam->finish?></td>
+                
+            </tr>
+            <?php } ?>
+          
+        </table>
+        <!-- if($absen >= 2){
+                echo '<div class="alert alert-danger d-flex align-items-center" style="color:white" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                <div style="color:white">
+                 Anda Sudah Melakukan Absen!
+                </div>
+              </div>
+              <p>Silahkan Report Perkerjaan. Klik di Bawah ini</p>';
+            }else if(($keterangan == 'Masuk') && (date('H:i:s') > date(strtotime($start))) && (date('H:i:s') > date(strtotime($finish)))){
+                echo '<div class="alert alert-danger d-flex align-items-center" style="color:white" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                <div style="color:white">
+                 Jam Masuk Sudah Terlewatkan
+                </div>
+              </div>';
+
+
+            }else if(($keterangan == 'Pulang') && (date('H:i:s') > date(strtotime($start))) && (date('H:i:s') > date(strtotime($finish)))){
+                echo '<div class="alert alert-danger d-flex align-items-center" style="color:white" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                <div style="color:white">
+                 Jam Pulang Sudah Terlewatkan
+                </div>
+              </div>';
+
+
+            }else{ -->
+       
+      
+        
+        
+        
+        
+    </div>
+
+</div>
+</div>
+
+</div>
+
+
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+    getLocation();
+
+    function getLocation(){
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }else{
+            alert('Lokasi tidak support dibrowser anda');
+        }
+    }
+
+    function showPosition(position){
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+        document.getElementById('lat').value = lat;
+        document.getElementById('long').value = long;
+    }
+
+</script>
+
+<script>
+    var hoursLabel = document.getElementById("hours");
+    var minutesLabel = document.getElementById("minutes");
+    var secondsLabel = document.getElementById("seconds");
+    setInterval(setTime, 1000);
+
+    function setTime() {
+        secondsLabel.innerHTML = pad(Math.floor(new Date().getSeconds()));
+        minutesLabel.innerHTML = pad(Math.floor(new Date().getMinutes()));
+        hoursLabel.innerHTML = pad(Math.floor(new Date().getHours()));
+    }
+
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+            return "0" + valString;
+        } else {
+            return valString;
+        }
+    }
+
+    <?php if(@$this->session->absen_needed): ?>
+        var absenNeeded = '<?= json_encode($this->session->absen_needed) ?>';
+        <?php $this->session->sess_unset('absen_needed') ?>
+    <?php endif; ?>
+</script>
+
+
+
+
+if ($this->uri->segment(3)) {
+            $keterangan = ucfirst($this->uri->segment(3));
+			$jam = $this->Jam_model->get_all();
+        } else {
+            $absen_harian = $this->Absensi_model->absen_harian_user($this->session->userdata('id_pegawai'))->num_rows();
+            $keterangan = ($absen_harian < 2 && $absen_harian < 1) ? 'Masuk' : 'Pulang';
+        }
+		$time = date('H:i:s');
+		$data['absen'] = $this->Absensi_model->get_jam_by_time($this->session->id_user, $time)->num_rows();
+
+        $data = [
+            'tgl_absen' => date('Y-m-d'),
+            'jam_absen' => date('H:i:s'),
+            'status_absen' => $keterangan,
+			'keterangan_absen' => $this->input->post('keterangan_absen'),
+			'lat_absen' => $this->input->post('lat_absen'),
+			'long_absen' => $this->input->post('long_absen'),
+            'id_pegawai' => $this->session->id_pegawai
+        ];
+        $result = $this->Absensi_model->insert_data($data);
+        if ($result) {
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center" role="alert">
+			<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+			<div>
+			  Selamat Absen Anda Sudah Dicatat
+			</div>
+		  </div>');
+        } else {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+			<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+			<div>
+			 Maaf, Data Anda Belum Dicatat
+			</div>
+		  </div>');
+        }
+        redirect('Absensi/index');
+
+
+        if($this->input->post('masuk')){
+			
+			$data = [
+				'tgl_absen' => date('Y-m-d'),
+				'jam_absen' => date('H:i:s'),
+				'keterangan_absen' => $this->input->post('keterangan_absen'),
+				'lat_absen' => $this->input->post('lat_absen'),
+				'long_absen' => $this->input->post('long_absen'),
+				'id_pegawai' => $this->session->id_pegawai,
+				'status_absen' => 'Masuk'
+				
+			];
+			$result = $this->db->insert('absensi', $data);
+			if($result == TRUE){
+				$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+					<div>
+					Selamat Absen Masuk Anda Sudah Dicatat
+					</div>
+				</div>');
+			}else{
+				$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+					<div>
+					Maaf, Data Anda Belum Dicatat
+					</div>
+				</div>');
+			}
+			redirect('absensi');
+
+
+		}elseif ($this->input->post('pulang')){
+			$data = [
+				
+				'jam_absen_pulang' => date('H:i:s'),
+
+				
+			];
+			$id_absen = $this->input->post('id_absen');
+			$id_pegawai = $this->session->id_pegawai;
+			
+			$this->db->where('tgl_absen', date('Y-m-d'));
+			$this->db->where('id_pegawai', $id_pegawai);
+			$result2 = $this->db->update('absensi', $data);
+
+			if($result2 == TRUE){
+				$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+					<div>
+					Selamat Absen Pulang Anda Sudah Dicatat
+					</div>
+				</div>');
+			}else{
+				$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+					<div>
+					Maaf, Data Anda Belum Dicatat
+					</div>
+				</div>');
+			}
+			redirect('absensi');
+		}
+
+
+
+         <?php if(time() > strtotime($jam_m->start) && time() < strtotime($jam_m->finish) ){?>
+
+                <input type="submit"class="btn bg-gradient-success" id="btn-masuk" value="Absen Masuk" name="masuk">
+            <?php }else{?>
+                <div class="alert alert-warning d-flex align-items-center text-white" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            <div>
+                Absen Masuk Belum dimulai
+            </div>
+            </div>
+                <input disabled="" type="submit"class="btn bg-gradient-success" name="masuk" value="Absen Masuk"/>
