@@ -67,37 +67,9 @@ class Absensi extends CI_Controller
 			'presensi_cuti' => $this->Absensi_model->getJumlahCuti()
 		];
 
-		  if ($this->input->post('submit')) {
-            // Handle the uploaded file
-            $config['upload_path'] = './uploads/'; // Set your upload path
-            $config['allowed_types'] = 'jpg|jpeg|png';
-            $config['max_size'] = 2048; // 2MB
-            $config['encrypt_name'] = true; // Rename the uploaded file
 
-            $this->load->library('upload', $config);
 
-            if ($this->upload->do_upload('selfie_image')) {
-                $uploadData = $this->upload->data();
-                $selfieData = array(
-                    'user_id' => $user_id, // Set the user ID here
-                    'image_name' => $uploadData['file_name'],
-                    'image_path' => $config['upload_path'] . $uploadData['file_name'],
-                    // You can add more fields like date, time, etc.
-                );
 
-                // Insert the selfie details into the database
-                $this->Selfie_model->insertSelfie($selfieData);
-
-                // Redirect or show a success message
-                redirect('absensi/dataKehadiran');
-            } else {
-                $uploadError = $this->upload->display_errors();
-                // Handle the upload error
-            }
-        }
-
-       
-   
 
 
 		$this->load->view('layout/header', $data);
@@ -108,74 +80,128 @@ class Absensi extends CI_Controller
 
 
 
+	// public function absen()
+	// {
+	// 	$today = $this->get_today_date;
+	// 	$jammasuk = $this->jamMasuk;
+	// 	$jampulang = $this->jamPulang;
+	// 	$absen_harian = $this->Absensi_model->absen_harian_user($this->session->userdata('id_pegawai'))->num_rows();
+
+
+	// 	if ($this->input->post('masuk')) {
+
+	// 		$data = [
+	// 			'tgl_absen' => date('Y-m-d'),
+	// 			'jam_absen' => date('H:i:s'),
+	// 			'keterangan_absen' => $this->input->post('keterangan_absen'),
+	// 			'lat_absen' => $this->input->post('lat_absen'),
+	// 			'long_absen' => $this->input->post('long_absen'),
+	// 			'id_pegawai' => $this->session->id_pegawai,
+	// 			'status_absen' => 1
+
+	// 		];
+	// 		$result = $this->db->insert('absensi', $data);
+	// 		if ($result == TRUE) {
+	// 			$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
+	// 				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+	// 				<div>
+	// 				Selamat Absen Masuk Anda Sudah Dicatat
+	// 				</div>
+	// 			</div>');
+	// 		} else {
+	// 			$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+	// 				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+	// 				<div>
+	// 				Maaf, Data Anda Belum Dicatat
+	// 				</div>
+	// 			</div>');
+	// 		}
+	// 		redirect('absensi');
+	// 	} elseif ($this->input->post('pulang')) {
+	// 		$data = [
+
+	// 			'jam_absen_pulang' => date('H:i:s'),
+	// 			'status_absen' => 2
+
+
+	// 		];
+	// 		$id_absen = $this->input->post('id_absen');
+	// 		$id_pegawai = $this->session->id_pegawai;
+
+	// 		$this->db->where('tgl_absen', date('Y-m-d'));
+	// 		$this->db->where('id_pegawai', $id_pegawai);
+	// 		$result2 = $this->db->update('absensi', $data);
+
+	// 		if ($result2 == TRUE) {
+	// 			$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
+	// 				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+	// 				<div>
+	// 				Selamat Absen Pulang Anda Sudah Dicatat
+	// 				</div>
+	// 			</div>');
+	// 		} else {
+	// 			$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+	// 				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+	// 				<div>
+	// 				Maaf, Data Anda Belum Dicatat
+	// 				</div>
+	// 			</div>');
+	// 		}
+	// 		redirect('absensi');
+	// 	}
+	// }
+
 	public function absen()
 	{
-		$today = $this->get_today_date;
-		$jammasuk = $this->jamMasuk;
-		$jampulang = $this->jamPulang;
-		$absen_harian = $this->Absensi_model->absen_harian_user($this->session->userdata('id_pegawai'))->num_rows();
-
-
 		if ($this->input->post('masuk')) {
+			$config['upload_path']          = './selfie_karyawan/';
+			$config['allowed_types']        = 'gif|jpg|JPG|png|PNG|jpeg|JPEG';
+			$config['max_size']             = 5000;
+			$config['max_width']            = 10000;
+			$config['max_height']           = 10000;
 
-			$data = [
-				'tgl_absen' => date('Y-m-d'),
-				'jam_absen' => date('H:i:s'),
-				'keterangan_absen' => $this->input->post('keterangan_absen'),
-				'lat_absen' => $this->input->post('lat_absen'),
-				'long_absen' => $this->input->post('long_absen'),
-				'id_pegawai' => $this->session->id_pegawai,
-				'status_absen' => 1
+			$this->load->library('upload', $config);
 
-			];
-			$result = $this->db->insert('absensi', $data);
-			if ($result == TRUE) {
-				$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
-					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-					<div>
-					Selamat Absen Masuk Anda Sudah Dicatat
-					</div>
+			if (!$this->upload->do_upload('selfie_absen')) {
+				$this->session->set_flashdata('pesanGagal', '<div class="alert alert-danger" role="alert">
+					<strong style="color:white">Gambar Gagal Di Upload</strong>
 				</div>');
+				redirect('absen/lokasi');
 			} else {
-				$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
-					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-					<div>
-					Maaf, Data Anda Belum Dicatat
-					</div>
-				</div>');
+
+				$image = $this->upload->data();
+				$image = $image['file_name'];
+
+
+				$data = array(
+					'tgl_absen' => date('Y-m-d'),
+					'jam_absen' => date('H:i:s'),
+					'lat_absen' => $this->input->post('lat_absen'),
+					'long_absen' => $this->input->post('long_absen'),
+					'id_pegawai' => $this->session->id_pegawai,
+					'status_absen' => 1,
+					'selfie_absen' => $image
+				);
+				$result = $this->db->insert('absensi', $data);
+				// $this->db->insert('user', $data);
+
+				if ($result == TRUE) {
+					$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
+						<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+						<div>
+						Selamat Absen Masuk Anda Sudah Dicatat
+						</div>
+					</div>');
+				} else {
+					$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+						<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+						<div>
+						Maaf, Data Anda Belum Dicatat
+						</div>
+					</div>');
+				}
+				redirect('absensi');
 			}
-			redirect('absensi');
-		} elseif ($this->input->post('pulang')) {
-			$data = [
-
-				'jam_absen_pulang' => date('H:i:s'),
-				'status_absen' => 2
-
-
-			];
-			$id_absen = $this->input->post('id_absen');
-			$id_pegawai = $this->session->id_pegawai;
-
-			$this->db->where('tgl_absen', date('Y-m-d'));
-			$this->db->where('id_pegawai', $id_pegawai);
-			$result2 = $this->db->update('absensi', $data);
-
-			if ($result2 == TRUE) {
-				$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
-					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-					<div>
-					Selamat Absen Pulang Anda Sudah Dicatat
-					</div>
-				</div>');
-			} else {
-				$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
-					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-					<div>
-					Maaf, Data Anda Belum Dicatat
-					</div>
-				</div>');
-			}
-			redirect('absensi');
 		}
 	}
 
@@ -642,9 +668,7 @@ class Absensi extends CI_Controller
 		$this->load->view('layout/footer');
 	}
 
-	  public function selfie()
-    {
-         
-    }
-
+	public function selfie()
+	{
+	}
 }

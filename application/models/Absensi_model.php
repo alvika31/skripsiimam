@@ -63,7 +63,7 @@ class Absensi_model extends CI_Model
         return $result;
     }
 
-     public function insertSelfie($data)
+    public function insertSelfie($data)
     {
         return $this->db->insert('selfie_absen', $data);
     }
@@ -152,7 +152,7 @@ class Absensi_model extends CI_Model
         $keterangan = array('Cuti', 'Sakit');
         $this->db->select('*');
         $this->db->from('absensi');
-        $this->db->where_not_in('keterangan_absen', $keterangan);
+
         $this->db->where('tgl_absen', date('Y-m-d'));
 
         $result = $this->db->get()->num_rows();
@@ -164,7 +164,7 @@ class Absensi_model extends CI_Model
         $this->db->select('*');
         $this->db->from('absensi');
         $this->db->where('status_absen', 2);
-        $this->db->where_not_in('keterangan_absen', $keterangan);
+
         $this->db->where('tgl_absen', date('Y-m-d'));
         $result = $this->db->get()->num_rows();
         return $result;
@@ -180,11 +180,11 @@ class Absensi_model extends CI_Model
 
     function fetchPresensiMasuk()
     {
-        $keterangan = array('Cuti', 'Sakit');
+
         $this->db->select('*');
         $this->db->from('absensi');
         $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
-        $this->db->where_not_in('keterangan_absen', $keterangan);
+
         $this->db->where('absensi.tgl_absen', date('Y-m-d'));
         $result = $this->db->get()->result();
         return $result;
@@ -192,12 +192,12 @@ class Absensi_model extends CI_Model
 
     function fetchPresensiPulang()
     {
-        $keterangan = array('Cuti', 'Sakit');
+
         $this->db->select('*');
         $this->db->from('absensi');
         $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
         $this->db->where('absensi.status_absen', 2);
-        $this->db->where_not_in('keterangan_absen', $keterangan);
+
         $this->db->where('absensi.tgl_absen', date('Y-m-d'));
         $result = $this->db->get()->result();
         return $result;
@@ -227,7 +227,7 @@ class Absensi_model extends CI_Model
         $this->db->select('*');
         $this->db->from('absensi');
         $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
-        $this->db->where('absensi.keterangan_absen', 'Sakit');
+
         $this->db->where('absensi.tgl_absen', date('Y-m-d'));
         $result = $this->db->get()->result();
         return $result;
@@ -237,7 +237,7 @@ class Absensi_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('absensi');
-        $this->db->where('keterangan_absen', 'Sakit');
+
         $this->db->where('tgl_absen', date('Y-m-d'));
         $result = $this->db->get()->num_rows();
         return $result;
@@ -247,7 +247,7 @@ class Absensi_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('absensi');
-        $this->db->where('keterangan_absen', 'Cuti');
+
         $this->db->where('tgl_absen', date('Y-m-d'));
         $result = $this->db->get()->num_rows();
         return $result;
@@ -258,7 +258,7 @@ class Absensi_model extends CI_Model
         $this->db->select('*');
         $this->db->from('absensi');
         $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
-        $this->db->where('absensi.keterangan_absen', 'Cuti');
+
         $this->db->where('absensi.tgl_absen', date('Y-m-d'));
         $result = $this->db->get()->result();
         return $result;
@@ -273,7 +273,7 @@ class Absensi_model extends CI_Model
         $this->db->where('absensi.id_pegawai', $id_pegawai);
         $this->db->where('month(absensi.tgl_absen)', $vbulan);
         $this->db->where('year(absensi.tgl_absen)', $tanggal);
-        $this->db->where_not_in('absensi.keterangan_absen', $keterangan);
+
         $result = $this->db->get()->num_rows();
         return $result;
     }
@@ -286,7 +286,7 @@ class Absensi_model extends CI_Model
         $this->db->where('absensi.id_pegawai', $id_pegawai);
         $this->db->where('month(absensi.tgl_absen)', $vbulan);
         $this->db->where('year(absensi.tgl_absen)', $tanggal);
-        $this->db->where_in('absensi.keterangan_absen', 'Sakit');
+
         $result = $this->db->get()->num_rows();
         return $result;
     }
@@ -299,7 +299,7 @@ class Absensi_model extends CI_Model
         $this->db->where('absensi.id_pegawai', $id_pegawai);
         $this->db->where('month(absensi.tgl_absen)', $vbulan);
         $this->db->where('year(absensi.tgl_absen)', $tanggal);
-        $this->db->where_in('absensi.keterangan_absen', 'Cuti');
+
         $result = $this->db->get()->num_rows();
         return $result;
     }
@@ -315,9 +315,4 @@ class Absensi_model extends CI_Model
         $result = $this->db->get()->num_rows();
         return $result;
     }
-
-  
-   
-
 }
-

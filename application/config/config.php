@@ -24,7 +24,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 
-$config['base_url'] = 'https://localhost/presensigps/';
+$config['base_url'] = 'https://localhost/skripsipresensi/';
 
 /*
 |--------------------------------------------------------------------------

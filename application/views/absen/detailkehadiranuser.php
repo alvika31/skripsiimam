@@ -40,41 +40,19 @@
                         setlocale(LC_ALL, 'id-ID', 'id_ID');
                         ?>
                         <p>Tanggal Presensi: <?= tanggal_indo($tanggal, true) ?></p>
-                        <?php if ($users->keterangan_absen == 'Sakit') { ?>
-                            <p>Waktu Datang: <span class="badge badge-pill bg-gradient-danger">Sakit</span></p>
-                        <?php } elseif ($users->keterangan_absen == 'Cuti') { ?>
-                            <p>Waktu Datang: <span class="badge badge-pill bg-gradient-warning">Cuti</span></p>
 
-                        <?php } else { ?>
-                            <p>Waktu Datang: <?= $users->jam_absen ?></p>
-                        <?php } ?>
-                        <?php if ($users->keterangan_absen == 'Sakit') { ?>
-                            <p>Waktu Pulang: <span class="badge badge-pill bg-gradient-danger">Sakit</span></p>
-                        <?php } elseif ($users->keterangan_absen == 'Cuti') { ?>
-                            <p>Waktu Pulang: <span class="badge badge-pill bg-gradient-warning">Cuti</span></p>
-                        <?php } else { ?>
-                            <?php if ($users->jam_absen_pulang == '00:00:00') { ?>
-                                <p>Waktu Pulang: <span class="badge badge-pill bg-gradient-danger">Belum Presensi Pulang</span></p>
-                            <?php } else { ?>
-                                <p>Waktu Pulang: <?= $users->jam_absen_pulang ?></p>
-                        <?php }
-                        } ?>
-                        <p>Keterangan Presensi: <?= $users->keterangan_absen ?></p>
+                        <p>Waktu Datang: <?= $users->jam_absen ?></p>
+
+
+
+
 
 
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6">
-                    <div class="card p-0">
-                        <h5 class="p-4">Foto Selfie:</h5>
-                    </div></div>
 
 
-
-
-
-                
                 <div class="col-12 col-md-6">
                     <div class="card p-0">
 
@@ -133,6 +111,17 @@
 
                     </div>
                 </div>
+                <div class="col-12 col-md-6">
+                    <div class="card p-0">
+                        <h5 class="p-4">Foto Selfie:</h5>
+                        <img src="<?= base_url() . '/selfie_karyawan/' . $users->selfie_absen ?>" width="100%" alt="">
+                    </div>
+                </div>
+
+
+
+
+
 
         </div>
     </div>

@@ -21,7 +21,7 @@
                         <div class="card bg-gradient-info text-white p-3">
                             <h6 class="text-white font-weight-bold">Sudah Presensi Pulang</h6>
                             <p>
-                               <?= tanggal_indo($tanggal, true) ?></p>
+                                <?= tanggal_indo($tanggal, true) ?></p>
                             <h1 class="mt-4 text-white"><?= $sudah_presensiP ?></h1>Orang
                         </div>
                     </a>
@@ -33,7 +33,7 @@
                             <p><?php
                                 setlocale(LC_ALL, 'id-ID', 'id_ID');
                                 ?>
-                               <?= tanggal_indo($tanggal, true) ?></p>
+                                <?= tanggal_indo($tanggal, true) ?></p>
                             <h1 class="mt-4 text-white"><?= $presensi_sakit ?></h1>Orang
                         </div>
                     </a>
@@ -45,7 +45,7 @@
                             <p><?php
                                 setlocale(LC_ALL, 'id-ID', 'id_ID');
                                 ?>
-                               <?= tanggal_indo($tanggal, true) ?></p>
+                                <?= tanggal_indo($tanggal, true) ?></p>
                             <h1 class="mt-4 text-white"><?= $presensi_cuti ?></h1>Orang
                         </div>
                 </div>
@@ -72,7 +72,7 @@
                 </a>
             </div>
         <?php } ?>
-        <?php  $tanggal = date('Y-m-d');?>
+        <?php $tanggal = date('Y-m-d'); ?>
         <div class="row" style="margin-bottom: 50px">
             <div class="col text-center">
                 <div class="card" style="width:100%; padding-top: 30px;padding-bottom: 30px">
@@ -233,7 +233,7 @@
                             }
                         </script>
 
-                        <form action="<?= site_url('absensi/absen') ?>" name="Form" onsubmit=" return validateForm()" id="my-form" method="post">
+                        <!-- <form action="<?= site_url('absensi/absen') ?>" name="Form" onsubmit=" return validateForm()" id="my-form" method="post">
                             <?php foreach ($jam_m as $jam_m) { ?>
                                 <label for="">Keterangan Presensi:</label>
                                 <div class="input-group mb-4">
@@ -263,7 +263,7 @@
 
                                     <button onclick="getLocation()" class="btn bg-gradient-success" id="btn-masuk" value="Presensi Masuk" name="masuk" <?= ($absen == 1) ? 'disabled style="cursor:not-allowed"' : '' ?>>Presensi Masuk</button>
 
-                                    	    
+
 
                                 <?php } else { ?>
                                     <div class="alert alert-warning d-flex align-items-center text-white" role="alert">
@@ -319,7 +319,7 @@
 
                             <?php }
                             } ?>
-                        </form>
+                        </form> -->
                         <a href="<?= site_url('absensi/lokasi') ?>" target="_blank" class="btn bg-gradient-primary">Lihat Lokasi Anda</a>
 
                         <table border="0px">
@@ -420,22 +420,22 @@
         <?php $this->session->sess_unset('absen_needed') ?>
     <?php endif; ?>
 </script>
- 
- <script>
-        function showLocationPopup() {
-            // Periksa apakah browser mendukung Geolocation API
-            if ("geolocation" in navigator) {
-                // Dapatkan lokasi pengguna menggunakan Geolocation API
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
-                    var locationMessage = "Lokasi terkini Anda:\nLatitude: " + latitude + "\nLongitude: " + longitude;
 
-                    // Tampilkan hasil lokasi dalam pop-up
-                    alert(locationMessage);
-                });
-            } else {
-                alert("Geolocation tidak didukung oleh browser Anda.");
-            }
+<script>
+    function showLocationPopup() {
+        // Periksa apakah browser mendukung Geolocation API
+        if ("geolocation" in navigator) {
+            // Dapatkan lokasi pengguna menggunakan Geolocation API
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                var locationMessage = "Lokasi terkini Anda:\nLatitude: " + latitude + "\nLongitude: " + longitude;
+
+                // Tampilkan hasil lokasi dalam pop-up
+                alert(locationMessage);
+            });
+        } else {
+            alert("Geolocation tidak didukung oleh browser Anda.");
         }
-    </script>
+    }
+</script>
