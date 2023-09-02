@@ -209,7 +209,8 @@ class Absensi extends CI_Controller
 	{
 
 		$data = [
-			'title' => 'Lokasi Anda'
+			'title' => 'Lokasi Anda',
+			'radius' => $this->Absensi_model->getRadius()
 		];
 		$this->load->view('layout/header', $data);
 		$this->load->view('layout/sidebar', $data);
@@ -670,5 +671,51 @@ class Absensi extends CI_Controller
 
 	public function selfie()
 	{
+	}
+
+	public function radius()
+	{
+		$data = [
+			'title' => 'Halaman Setting Radius',
+			'radius' => $this->Absensi_model->getRadius()
+		];
+		$this->load->view('layout/header', $data);
+		$this->load->view('layout/sidebar', $data);
+		$this->load->view('absen/radius', $data);
+		$this->load->view('layout/footer');
+	}
+
+	public function edit_radius($id_radius)
+	{
+		$data = [
+			'title' => 'Edit Radius',
+			'radius' => $this->Absensi_model->detailRadius($id_radius)
+		];
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('layout/sidebar', $data);
+		$this->load->view('absen/edit_radius', $data);
+		$this->load->view('layout/footer');
+	}
+
+	public function do_edit_radius()
+	{
+		$id_radius = $this->input->post('id_radius');
+		$kordinat = $this->input->post('kordinat');
+
+		$data = [
+			'kordinat' => $kordinat
+		];
+		$result = $this->Absensi_model->updateRadius($data, $id_radius);
+		if ($result == TRUE) {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+					<strong style="color:white">Jam Berhasil dirubah!</strong>
+					</div>');
+		} else {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+					<strong style="color:white">Jam Tidak Berhasil dirubah!</strong>
+					</div>');
+		}
+		redirect('absensi/radius');
 	}
 }

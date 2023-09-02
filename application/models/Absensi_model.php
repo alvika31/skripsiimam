@@ -315,4 +315,23 @@ class Absensi_model extends CI_Model
         $result = $this->db->get()->num_rows();
         return $result;
     }
+
+    public function getRadius()
+    {
+        $result = $this->db->get('radius');
+        return $result->result();
+    }
+
+    public function detailRadius($id_radius)
+    {
+        return $this->db->get_where('radius', ['id_radius' => $id_radius])
+            ->row_array();
+    }
+
+    public function updateRadius($data, $id_radius)
+    {
+        $this->db->where('id_radius', $id_radius);
+        $result = $this->db->update('radius', $data);
+        return $result;
+    }
 }

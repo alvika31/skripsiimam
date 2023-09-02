@@ -37,7 +37,7 @@
       <button id="checkLocationButton" type="button" class="btn btn-primary">Cek Lokasi Anda</button>
       <div class="d-flex flex-column mb-3">
         <label for="" id="label_selfie" style="display: none;">Foto Selfie:</label>
-        <input class="" id="selfie" style="display: none;" type="file" name="selfie_absen" accept="image/*" capture="camera" id="cameraInput">
+        <input class="" id="selfie" style="display: none;" type="file" name="selfie_absen" accept="image/*" capture="camera" id="cameraInput" required>
       </div>
       <input type="submit" id="submit" style="display: none;" name="masuk" value="Isi Presensi" class="btn btn-danger" />
     </form>
@@ -56,12 +56,9 @@
       zoom: 8
     });
 
-    var polygonPoints = [
-      [-6.815258444765775, 105.5121309541219],
-      [-7.589127150261739, 109.39030474486499],
-      [-6.029213107278608, 109.44523638496051],
-      [-5.121671471195936, 106.95133992462429]
-    ];
+    <?php foreach ($radius as $radius) { ?>
+      var polygonPoints = <?= $radius->kordinat ?>
+    <?php } ?>
 
     var presensiPolygon = L.polygon(polygonPoints, {
       color: 'blue',

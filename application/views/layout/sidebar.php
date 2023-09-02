@@ -65,6 +65,14 @@
             <span class="nav-link-text ms-1">Setting Jam</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link <?= ($title === 'Halaman Setting Jam' || $title === 'Halaman Edit Jam') ? 'active' : '' ?> " href="<?= site_url('absensi/radius') ?>">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-map-big text-danger text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Setting Radius</span>
+          </a>
+        </li>
     </ul>
   </div>
 <?php } ?>

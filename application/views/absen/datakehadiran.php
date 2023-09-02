@@ -48,11 +48,6 @@
                                             </td>
                                         <?php
                                         } ?>
-
-
-
-
-
                                         <td class="align-middle">
                                             <a href="<?= site_url('absensi/detailKehadiran_byUser/' . $users->id_absen) ?>" class="btn btn-info btn-sm" style="padding: 10px" data-toggle="tooltip" data-placement="top" title="Detail Presensi">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
