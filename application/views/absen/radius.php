@@ -4,6 +4,7 @@
             <div class="col">
                 <div class="card" style="width:100%; padding-top: 30px;padding-bottom: 30px">
                     <h3 class="text-center mb-4">Data Radius Absen</h3>
+                    <?php echo $this->session->flashdata('pesan'); ?>
                     <div class="table-responsive">
                         <table class="table align-items-center mb-1">
                             <thead>

@@ -320,7 +320,7 @@
                             <?php }
                             } ?>
                         </form> -->
-                        <a href="<?= site_url('absensi/lokasi') ?>" target="_blank" class="btn bg-gradient-primary">Lihat Lokasi Anda</a>
+                        <a href="<?= site_url('absensi/lokasi') ?>" class="btn bg-gradient-primary">Isi Presensi</a>
 
                         <table border="0px">
                             <tr>

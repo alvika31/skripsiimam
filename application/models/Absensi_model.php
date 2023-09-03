@@ -334,4 +334,11 @@ class Absensi_model extends CI_Model
         $result = $this->db->update('radius', $data);
         return $result;
     }
+
+    public function getJamFirst()
+    {
+        $query = $this->db->get('jam');
+        $firstRow = $query->row();
+        return $firstRow;
+    }
 }

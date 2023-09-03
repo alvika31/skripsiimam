@@ -44,7 +44,13 @@
 
                                         <?php if ($users->status_absen == 1) { ?>
                                             <td class="align-middle">
-                                                <h6 class="mb-0 text-xs"><span class="badge bg-gradient-success">Sudah Presensi </span></h6>
+                                                <h6 class="mb-0 text-xs"><span class="badge bg-gradient-success">Tepat Waktu</span></h6>
+                                            </td>
+                                        <?php
+                                        } ?>
+                                        <?php if ($users->status_absen == 0) { ?>
+                                            <td class="align-middle">
+                                                <h6 class="mb-0 text-xs"><span class="badge bg-gradient-danger">Telat</span></h6>
                                             </td>
                                         <?php
                                         } ?>

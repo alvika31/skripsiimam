@@ -166,41 +166,62 @@ class Absensi extends CI_Controller
 				$this->session->set_flashdata('pesanGagal', '<div class="alert alert-danger" role="alert">
 					<strong style="color:white">Gambar Gagal Di Upload</strong>
 				</div>');
-				redirect('absen/lokasi');
+				redirect('absensi');
 			} else {
+				$absen = $this->Absensi_model->absen_harian_user($this->session->userdata('id_pegawai'))->num_rows();
 
-				$image = $this->upload->data();
-				$image = $image['file_name'];
+				if ($absen) {
+					$this->session->set_flashdata('pesan', '<div class="alert alert-danger d-flex align-items-center text-white" role="alert">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+</svg>
+						<div>
+						Gagal!, Anda Sudah Mengisi Presensi Hari Ini!
+						</div>
+					</div>');
+					redirect('absensi');
+				} else {
 
+					$data_jam = $this->Absensi_model->getJamFirst();
+					$image = $this->upload->data();
+					$image = $image['file_name'];
 
-				$data = array(
-					'tgl_absen' => date('Y-m-d'),
-					'jam_absen' => date('H:i:s'),
-					'lat_absen' => $this->input->post('lat_absen'),
-					'long_absen' => $this->input->post('long_absen'),
-					'id_pegawai' => $this->session->id_pegawai,
-					'status_absen' => 1,
-					'selfie_absen' => $image
-				);
-				$result = $this->db->insert('absensi', $data);
-				// $this->db->insert('user', $data);
+					$currentTime = date('H:i:s');
+					$statusAbsen = 0;
+					if ($currentTime >= $data_jam->start && $currentTime <= $data_jam->finish) {
+						$statusAbsen = 1; // Set status to 1 when within the time range
+					}
 
-				if ($result == TRUE) {
-					$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
+					$data = array(
+						'tgl_absen' => date('Y-m-d'),
+						'jam_absen' => $currentTime,
+						'lat_absen' => $this->input->post('lat_absen'),
+						'long_absen' => $this->input->post('long_absen'),
+						'id_pegawai' => $this->session->id_pegawai,
+						'status_absen' => $statusAbsen,
+						'selfie_absen' => $image
+					);
+					$result = $this->db->insert('absensi', $data);
+
+					if ($result == TRUE) {
+						$this->session->set_flashdata('pesan', '<div class="alert alert-success d-flex align-items-center text-white" role="alert">
 						<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
 						<div>
 						Selamat Absen Masuk Anda Sudah Dicatat
 						</div>
 					</div>');
-				} else {
-					$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
+					} else {
+						$this->session->set_flashdata('pesan', '<div class="alert alert-warning d-flex align-items-center" role="alert">
 						<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
 						<div>
 						Maaf, Data Anda Belum Dicatat
 						</div>
 					</div>');
+					}
+
+
+					redirect('absensi');
 				}
-				redirect('absensi');
 			}
 		}
 	}
@@ -210,8 +231,11 @@ class Absensi extends CI_Controller
 
 		$data = [
 			'title' => 'Lokasi Anda',
-			'radius' => $this->Absensi_model->getRadius()
+			'radius' => $this->Absensi_model->getRadius(),
+			'jam' => $this->Absensi_model->getJamFirst(),
+			'cek_absen' => $this->Absensi_model->absen_harian_user($this->session->userdata('id_pegawai'))->num_rows()
 		];
+
 		$this->load->view('layout/header', $data);
 		$this->load->view('layout/sidebar', $data);
 		$this->load->view('absen/lokasi', $data);
@@ -703,19 +727,27 @@ class Absensi extends CI_Controller
 		$id_radius = $this->input->post('id_radius');
 		$kordinat = $this->input->post('kordinat');
 
-		$data = [
-			'kordinat' => $kordinat
-		];
-		$result = $this->Absensi_model->updateRadius($data, $id_radius);
-		if ($result == TRUE) {
-			$this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
-					<strong style="color:white">Jam Berhasil dirubah!</strong>
-					</div>');
-		} else {
+		if ($kordinat === '') {
 			$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
-					<strong style="color:white">Jam Tidak Berhasil dirubah!</strong>
+					<strong style="color:white">Gagal!. Harap Ubah Radiusnya</strong>
 					</div>');
+			redirect('absensi/radius');
+		} else {
+
+			$data = [
+				'kordinat' => $kordinat
+			];
+			$result = $this->Absensi_model->updateRadius($data, $id_radius);
+			if ($result == TRUE) {
+				$this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">
+					<strong style="color:white">Radius Berhasil dirubah!</strong>
+					</div>');
+			} else {
+				$this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">
+					<strong style="color:white">Radius Tidak Berhasil dirubah!</strong>
+					</div>');
+			}
+			redirect('absensi/radius');
 		}
-		redirect('absensi/radius');
 	}
 }

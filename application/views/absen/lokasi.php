@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -22,25 +23,68 @@
       width: 100%;
       height: 100vh;
     }
+
+    .card-presensi {
+      z-index: 100;
+      bottom: 0;
+      left: 45%
+    }
+
+    @media screen and (max-width: 768px) {
+      .card-presensi {
+        z-index: 100;
+        bottom: 0;
+        left: 4%;
+      }
+    }
+
+    .custom-popup {
+      display: none;
+      position: fixed;
+      top: 25%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      color: black;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      z-index: 200;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .popup-message {
+      margin: 0;
+    }
   </style>
 
 </head>
 
 <body>
-  <div class="position-fixed bg-white p-4 rounded" style="z-index:100; bottom: 0; left:45%">
 
-    <form class="d-flex flex-column" action="<?= site_url('absensi/absen') ?>" method="POST" enctype="multipart/form-data">
-      <!-- Your existing form elements here -->
-      <input type="hidden" name="lat_absen" id="lat">
-      <input type="hidden" name="long_absen" id="long">
-      <input type="hidden" name="id_absen">
-      <button id="checkLocationButton" type="button" class="btn btn-primary">Cek Lokasi Anda</button>
-      <div class="d-flex flex-column mb-3">
-        <label for="" id="label_selfie" style="display: none;">Foto Selfie:</label>
-        <input class="" id="selfie" style="display: none;" type="file" name="selfie_absen" accept="image/*" capture="camera" id="cameraInput" required>
+  <div class="position-fixed bg-white p-4 rounded card-presensi" style="">
+    <?php if ($cek_absen) { ?>
+      <div class="alert alert-success" style="color:white" role="alert">
+        Anda Sudah Absen
       </div>
-      <input type="submit" id="submit" style="display: none;" name="masuk" value="Isi Presensi" class="btn btn-danger" />
-    </form>
+    <?php } else { ?>
+
+      <form class="d-flex flex-column" action="<?= site_url('absensi/absen') ?>" method="POST" enctype="multipart/form-data">
+
+        <!-- Your existing form elements here -->
+        <input type="hidden" name="lat_absen" id="lat">
+        <input type="hidden" name="long_absen" id="long">
+        <input type="hidden" name="id_absen">
+        <button id="checkLocationButton" type="button" class="btn btn-primary">Cek Lokasi Anda</button>
+        <div class="d-flex flex-column mb-3">
+          <label for="" id="label_selfie">Foto Selfie:</label>
+          <input class="" id="selfie" type="file" name="selfie_absen" accept="image/*" capture="camera" id="cameraInput" required disabled>
+        </div>
+        <input type="submit" id="submit" name="masuk" value="Isi Presensi" class="btn btn-danger" disabled />
+      </form>
+      <p class="font-weight-bold" for="">Jam Presensi:</p>
+      <p><?= $jam->start ?> - <?= $jam->finish ?></p>
+    <?php } ?>
   </div>
 
   <div id="popup" class="custom-popup" style="display: none;">
@@ -73,7 +117,7 @@
     L.Control.geocoder().addTo(map_init);
 
     var marker, circle, lat, long, accuracy;
-    var userLatLng; // Deklarasikan userLatLng di luar fungsi getPosition
+    var userLatLng;
 
     function getPosition(position) {
       lat = position.coords.latitude;
@@ -98,18 +142,10 @@
       var featureGroup = L.featureGroup([marker, circle]).addTo(map_init);
       map_init.fitBounds(featureGroup.getBounds());
 
-      console.log("Your coordinate is: Lat: " + lat + " Long: " + long + " Accuracy: " + accuracy);
-
-      userLatLng = L.latLng(lat, long); // Atur userLatLng di dalam fungsi getPosition
+      userLatLng = L.latLng(lat, long);
     }
 
-    if (!navigator.geolocation) {
-      console.log("Your browser doesn't support geolocation feature!");
-    } else {
-      setInterval(() => {
-        navigator.geolocation.getCurrentPosition(getPosition);
-      }, 4000);
-    }
+    navigator.geolocation.getCurrentPosition(getPosition);
 
     var popupStyle = document.createElement('style');
     popupStyle.innerHTML = `
@@ -132,99 +168,35 @@
     var checkLocationButton = document.getElementById('checkLocationButton');
     var popupMessageElement = document.getElementById('popupMessage');
 
-
-
     checkLocationButton.addEventListener('click', function() {
       checkLocation();
     });
 
     function checkLocation() {
+      navigator.geolocation.getCurrentPosition(getPosition);
       var selfie = document.getElementById('selfie');
       var submit = document.getElementById('submit');
       var label_selfie = document.getElementById('label_selfie');
       if (presensiPolygon.getBounds().contains(userLatLng)) {
         popupMessageElement.textContent = "Anda telah di lokasi kantor";
-        selfie.style.display = 'block';
-        submit.style.display = 'block';
-        label_selfie.style.display = 'block';
+        selfie.removeAttribute('disabled');
+        submit.removeAttribute('disabled');
+        label_selfie.style.color = '';
       } else {
         popupMessageElement.textContent = "Anda belum di kantor.";
-        selfie.style.display = 'none';
-        submit.style.display = 'none';
-        label_selfie.style.display = 'none';
+        selfie.setAttribute('disabled', 'disabled');
+        submit.setAttribute('disabled', 'disabled');
+        label_selfie.style.color = 'red';
       }
-
       document.getElementById('popup').style.display = 'block';
-
       setTimeout(hidePopup, 5000);
     }
 
     function hidePopup() {
       document.getElementById('popup').style.display = 'none';
     }
-
-
-
-
-    // Potongan kode JavaScript untuk tombol "Selfie" dan input kamera
-    var selfieButton = document.getElementById('selfieButton');
-    var cameraInput = document.getElementById('cameraInput');
-
-    selfieButton.addEventListener('click', function() {
-      cameraInput.click();
-    });
-
-    cameraInput.addEventListener('change', function(event) {
-      var imageFile = event.target.files[0];
-      if (imageFile) {
-        console.log('Gambar diambil dari kamera:', imageFile);
-      }
-    });
-
-    function uploadSelfie(imageFile) {
-      var formData = new FormData();
-      formData.append('selfie_photo', imageFile);
-
-      fetch('<?= site_url('controller/upload_selfie') ?>', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            // Handle success
-            alert('Selfie photo uploaded successfully!');
-          } else {
-            // Handle error
-            alert('Selfie photo upload failed.');
-          }
-        })
-        .catch(error => {
-          console.error('Error uploading selfie photo:', error);
-          alert('An error occurred while uploading the selfie photo.');
-        });
-    }
   </script>
 
-  <style>
-    /* ... gaya-gaya sebelumnya ... */
-
-    .custom-popup {
-      /* ... properti yang lain ... */
-      position: fixed;
-      top: 25%;
-      /* Pindahkan lebih ke atas */
-      left: 50%;
-      /* Pusatkan secara horizontal */
-      transform: translate(-50%, -50%);
-      /* Atur posisi vertikal dan horizontal */
-    }
-
-    /* ... gaya-gaya sebelumnya ... */
-  </style>
-
 </body>
-
-</html>
 
 </html>
