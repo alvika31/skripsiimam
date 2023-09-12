@@ -16,7 +16,7 @@
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="<?= site_url('absensi/dataPresensiPulang') ?>">
+                    <a href="<?= site_url('absensi/dataPresensiTelat') ?>">
                         <div class="card bg-gradient-danger text-white p-3">
                             <h6 class="text-white font-weight-bold">Telat</h6>
                             <p>

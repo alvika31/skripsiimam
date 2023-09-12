@@ -222,6 +222,17 @@ class Absensi_model extends CI_Model
         return $result;
     }
 
+    function fetchPresensiTelat()
+    {
+        $this->db->select('*');
+        $this->db->from('absensi');
+        $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
+        $this->db->where('absensi.status_absen', 0);
+        $this->db->where('absensi.tgl_absen', date('Y-m-d'));
+        $result = $this->db->get()->result();
+        return $result;
+    }
+
     function belumPresensi()
     {
 

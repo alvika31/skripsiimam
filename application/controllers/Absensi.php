@@ -666,6 +666,19 @@ class Absensi extends CI_Controller
 		$this->load->view('layout/footer');
 	}
 
+	function dataPresensiTelat()
+	{
+		$data = [
+			'telat' => $this->Absensi_model->fetchPresensiTelat(),
+			'title' => 'Halaman Presensi Telat'
+		];
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('layout/sidebar', $data);
+		$this->load->view('absen/listtelat', $data);
+		$this->load->view('layout/footer');
+	}
+
 	function dataBelumPresensi()
 	{
 		$user = $this->Users_model->read();

@@ -15,7 +15,7 @@
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Action</th>
                                 </tr>
                                 <?php $i = 1;
-                                foreach ($listtepatwaktu as $masuk) {
+                                foreach ($telat as $masuk) {
                                     $tanggal = date('Y-m-d', strtotime($masuk->tgl_absen));
 
 
