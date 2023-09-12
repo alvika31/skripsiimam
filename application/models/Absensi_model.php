@@ -147,14 +147,23 @@ class Absensi_model extends CI_Model
         return $result;
     }
 
-    function getSudahPresensiM()
+    function getTepatWaktu()
     {
-        $keterangan = array('Cuti', 'Sakit');
+
         $this->db->select('*');
         $this->db->from('absensi');
-
         $this->db->where('tgl_absen', date('Y-m-d'));
+        $this->db->where('status_absen', 1);
+        $result = $this->db->get()->num_rows();
+        return $result;
+    }
 
+    function getTelat()
+    {
+        $this->db->select('*');
+        $this->db->from('absensi');
+        $this->db->where('tgl_absen', date('Y-m-d'));
+        $this->db->where('status_absen', 0);
         $result = $this->db->get()->num_rows();
         return $result;
     }
@@ -184,8 +193,18 @@ class Absensi_model extends CI_Model
         $this->db->select('*');
         $this->db->from('absensi');
         $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
-
         $this->db->where('absensi.tgl_absen', date('Y-m-d'));
+        $result = $this->db->get()->result();
+        return $result;
+    }
+
+    function getDataTepatWaktu()
+    {
+        $this->db->select('*');
+        $this->db->from('absensi');
+        $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
+        $this->db->where('absensi.tgl_absen', date('Y-m-d'));
+        $this->db->where('absensi.status_absen', 1);
         $result = $this->db->get()->result();
         return $result;
     }

@@ -42,17 +42,16 @@
                         <p>Tanggal Presensi: <?= tanggal_indo($tanggal, true) ?></p>
 
                         <p>Waktu Datang: <?= $users->jam_absen ?></p>
+                        <p>Keterangan:
+                            <?php if ($users->status_absen == 0) { ?>
+                                <span class="badge bg-gradient-danger">Telat</span>
+                            <?php } else { ?>
+                                <span class="badge bg-gradient-success">Tepat Waktu</span>
+                            <?php } ?>
 
-
-
-
-
-
+                        </p>
                     </div>
                 </div>
-
-
-
                 <div class="col-12 col-md-6">
                     <div class="card p-0">
 

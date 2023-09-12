@@ -44,9 +44,9 @@ class Absensi extends CI_Controller
 
 		setlocale(LC_ALL, 'id-ID', 'id_ID');
 
-		$prensiMasuk = $this->Absensi_model->getSudahPresensiM();
+		$tepatwaktu = $this->Absensi_model->getTepatWaktu();
 		$jumlahPegawai = $this->Absensi_model->getJumlahPegawai();
-		$presensiPulang = $jumlahPegawai - $prensiMasuk;
+		// $presensiPulang = $jumlahPegawai - $prensiMasuk;
 
 
 		$data = [
@@ -59,12 +59,13 @@ class Absensi extends CI_Controller
 			'jam_p' => $this->Jam_model->get_jam_pulang(),
 			'greeting' => $greet,
 			'user' => $this->Absensi_model->getUserbyIdd($id_pegawai)->result(),
-			'sudah_presensiM' => $prensiMasuk,
+			'tepatwaktu' => $tepatwaktu,
 			'sudah_presensiP' => $this->Absensi_model->getSudahPresensiP(),
 			'belum_presensi' => $this->Absensi_model->countBelumPresensi(),
 			'jumlah_pegawai' => $jumlahPegawai,
 			'presensi_sakit' => $this->Absensi_model->getJumlahSakit(),
-			'presensi_cuti' => $this->Absensi_model->getJumlahCuti()
+			'presensi_cuti' => $this->Absensi_model->getJumlahCuti(),
+			'telat' => $this->Absensi_model->getTelat()
 		];
 
 
@@ -624,6 +625,19 @@ class Absensi extends CI_Controller
 
 			redirect('absensi/datakehadiran');
 		}
+	}
+
+	function dataTepatWaktu()
+	{
+		$data = [
+			'listtepatwaktu' => $this->Absensi_model->getDataTepatWaktu(),
+			'title' => 'User Tepatt Waktu'
+		];
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('layout/sidebar', $data);
+		$this->load->view('absen/listtepatwaktu', $data);
+		$this->load->view('layout/footer');
 	}
 
 	function dataPresensiMasuk()
