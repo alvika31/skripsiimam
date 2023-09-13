@@ -87,7 +87,7 @@
             </div>
         </div>
         <?php echo $this->session->flashdata('pesan'); ?>
-
+        <?php echo $this->session->flashdata('pesanGagal'); ?>
         <div class="row">
 
             <div class="col d-block d-md-none">

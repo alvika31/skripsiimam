@@ -157,7 +157,7 @@ class Absensi extends CI_Controller
 		if ($this->input->post('masuk')) {
 			$config['upload_path']          = './selfie_karyawan/';
 			$config['allowed_types']        = 'gif|jpg|JPG|png|PNG|jpeg|JPEG';
-			$config['max_size']             = 5000;
+			$config['max_size']             = 10000;
 			$config['max_width']            = 10000;
 			$config['max_height']           = 10000;
 
@@ -165,7 +165,7 @@ class Absensi extends CI_Controller
 
 			if (!$this->upload->do_upload('selfie_absen')) {
 				$this->session->set_flashdata('pesanGagal', '<div class="alert alert-danger" role="alert">
-					<strong style="color:white">Gambar Gagal Di Upload</strong>
+					<strong style="color:white">Gambar Gagal Di Upload, Dikarenakan Ukuran Foto Di atas 5mb</strong>
 				</div>');
 				redirect('absensi');
 			} else {

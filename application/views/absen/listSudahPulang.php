@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col">
                 <div class="card" style="width:100%; padding-top: 30px;padding-bottom: 30px">
-                    <h3 class="text-center mb-4">Data Sudah Presensi Pulang</h3>
+                    <h3 class="text-center mb-4">Data Presensi Terlambat</h3>
                     <div class="table-responsive">
                         <table class="table align-items-center mb-1">
                             <thead>
