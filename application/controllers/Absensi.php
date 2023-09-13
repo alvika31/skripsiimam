@@ -157,9 +157,9 @@ class Absensi extends CI_Controller
 		if ($this->input->post('masuk')) {
 			$config['upload_path']          = './selfie_karyawan/';
 			$config['allowed_types']        = 'gif|jpg|JPG|png|PNG|jpeg|JPEG';
-			$config['max_size']             = 5000;
-			$config['max_width']            = 10000;
-			$config['max_height']           = 10000;
+			$config['max_size']             = 500;
+			$config['max_width']            = 500;
+			$config['max_height']           = 500;
 
 			$this->load->library('upload', $config);
 
