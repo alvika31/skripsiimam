@@ -404,8 +404,8 @@ class Absensi extends CI_Controller
 				'nama' => $this->db->get('user')->result(),
 				'fil' => $this->Absensi_model->filter_username($id_pegawai, $tanggal, $vbulan)->result(),
 				'countPresensi' => $this->Absensi_model->countPresensi($id_pegawai, $tanggal, $vbulan),
-				'countSakit' => $this->Absensi_model->countSakit($id_pegawai, $tanggal, $vbulan),
-				'countCuti' => $this->Absensi_model->countCuti($id_pegawai, $tanggal, $vbulan),
+				'countTepatWaktu' => $this->Absensi_model->countTepatWaktu($id_pegawai, $tanggal, $vbulan),
+				'countTelat' => $this->Absensi_model->countTelat($id_pegawai, $tanggal, $vbulan),
 				'identitas' => $this->db->get('user')->row(),
 				'inp' => $this->input->post('tanggal'),
 				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row()

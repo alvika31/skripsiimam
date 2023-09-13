@@ -79,14 +79,14 @@ $nama_lengkap = $namaselect->nama_lengkap;
                 </div>
                 <div class="col-md m-md-0 m-2 col">
                     <div class="card bg-danger p-3">
-                        Sakit:<br>
-                        <b><?= $countSakit ?></b>
+                        Tepat Waktu:<br>
+                        <b><?= $countTepatWaktu ?></b>
                     </div>
                 </div>
                 <div class="col-md m-md-0 m-2 col">
                     <div class="card bg-info p-3">
-                        Cuti:<br>
-                        <b><?= $countCuti ?></b>
+                        Telat:<br>
+                        <b><?= $countTelat ?></b>
                     </div>
                 </div>
             <?php } ?>
@@ -107,7 +107,7 @@ $nama_lengkap = $namaselect->nama_lengkap;
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Pegawai</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Presensi Masuk</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Presensi Pulang</th>
+
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Info Presensi</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                 </tr>
@@ -137,44 +137,22 @@ $nama_lengkap = $namaselect->nama_lengkap;
                                             <td class="align-middle">
                                                 <h6 class="mb-0 text-xs"> <?= $fill->username ?></h6>
                                             </td>
-                                            <?php if ($fill->keterangan_absen == 'Sakit') { ?>
-                                                <td class="align-middle">
-                                                    <h6 class="mb-0 text-xs"> <span class="badge bg-gradient-danger">Sakit</span></h6>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <h6 class="mb-0 text-xs"> <span class="badge bg-gradient-danger">Sakit</span></h6>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <h6 class="mb-0 text-xs"> <span class="badge bg-gradient-danger">Sakit</span></h6>
-                                                </td>
 
-                                            <?php } elseif ($fill->keterangan_absen == 'Cuti') { ?>
+
+                                            <td class="align-middle">
+                                                <h6 class="mb-0 text-xs"><?= $fill->jam_absen ?></h6>
+                                            </td>
+
+                                            <?php if ($fill->status_absen == 0) { ?>
                                                 <td class="align-middle">
-                                                    <h6 class="mb-0 text-xs"><span class="badge bg-gradient-warning">Cuti</span></h6>
+                                                    <h6 class="mb-0 text-xs"><span class="badge bg-gradient-danger">Telat</span></h6>
                                                 </td>
+                                            <?php } elseif ($fill->status_absen == 1) { ?>
                                                 <td class="align-middle">
-                                                    <h6 class="mb-0 text-xs"><span class="badge bg-gradient-warning">Cuti</span></h6>
+                                                    <h6 class="mb-0 text-xs"><span class="badge bg-gradient-success">Tepat Waktu</span></h6>
                                                 </td>
-                                                <td class="align-middle">
-                                                    <h6 class="mb-0 text-xs"><span class="badge bg-gradient-warning">Cuti</span></h6>
-                                                </td>
-                                            <?php } else { ?>
-                                                <td class="align-middle">
-                                                    <h6 class="mb-0 text-xs"><?= $fill->jam_absen ?></h6>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <h6 class="mb-0 text-xs"><?= $fill->jam_absen_pulang ?></h6>
-                                                </td>
-                                                <?php if ($fill->status_absen == 1) { ?>
-                                                    <td class="align-middle">
-                                                        <h6 class="mb-0 text-xs"><span class="badge bg-gradient-danger">Belum Presensi Pulang</span></h6>
-                                                    </td>
-                                                <?php } elseif ($fill->status_absen == 2) { ?>
-                                                    <td class="align-middle">
-                                                        <h6 class="mb-0 text-xs"><span class="badge bg-gradient-success">Sudah Presensi </span></h6>
-                                                    </td>
                                             <?php }
-                                            } ?>
+                                            ?>
 
 
 

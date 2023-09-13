@@ -321,6 +321,32 @@ class Absensi_model extends CI_Model
         return $result;
     }
 
+    function countTepatWaktu($id_pegawai, $tanggal, $vbulan)
+    {
+        $this->db->select('*');
+        $this->db->from('absensi');
+        $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
+        $this->db->where('absensi.id_pegawai', $id_pegawai);
+        $this->db->where('month(absensi.tgl_absen)', $vbulan);
+        $this->db->where('year(absensi.tgl_absen)', $tanggal);
+        $this->db->where('absensi.status_absen', 1);
+        $result = $this->db->get()->num_rows();
+        return $result;
+    }
+
+    function countTelat($id_pegawai, $tanggal, $vbulan)
+    {
+        $this->db->select('*');
+        $this->db->from('absensi');
+        $this->db->join('user', 'absensi.id_pegawai = user.id_pegawai');
+        $this->db->where('absensi.id_pegawai', $id_pegawai);
+        $this->db->where('month(absensi.tgl_absen)', $vbulan);
+        $this->db->where('year(absensi.tgl_absen)', $tanggal);
+        $this->db->where('absensi.status_absen', 0);
+        $result = $this->db->get()->num_rows();
+        return $result;
+    }
+
     function countCuti($id_pegawai, $tanggal, $vbulan)
     {
         $this->db->select('*');
