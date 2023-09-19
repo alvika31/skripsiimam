@@ -285,8 +285,10 @@ class Absensi extends CI_Controller
 		$data = array(
 			'title' => 'Data Kehadiran Anda',
 			'user' => $this->Absensi_model->getUserbyId($id_pegawai, $limit, $start)->result(),
-			'i' => $start + 1
+			'i' => $start + 1,
+			'jam' => $this->Absensi_model->getJamFirst(),
 		);
+
 		$this->load->view('layout/header', $data);
 		$this->load->view('layout/sidebar');
 		$this->load->view('absen/datakehadiran', $data);
@@ -337,7 +339,8 @@ class Absensi extends CI_Controller
 			'title' => 'Data Kehadiran Pegawai',
 			'user' => $this->Absensi_model->getUserPegawai($limit, $start)->result(),
 			'i' => $start + 1,
-			'nama' => $this->db->get('user')->result()
+			'nama' => $this->db->get('user')->result(),
+			'jam' => $this->Absensi_model->getJamFirst(),
 		);
 		$this->load->view('layout/header', $data);
 		$this->load->view('layout/sidebar');
@@ -394,7 +397,8 @@ class Absensi extends CI_Controller
 				'fil' => $this->Absensi_model->filter_name($id_pegawai)->result(),
 				'identitas' => $this->db->get('user')->row(),
 				'inp' => $this->input->post('tanggal'),
-				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row()
+				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row(),
+				'jam' => $this->Absensi_model->getJamFirst(),
 
 			];
 		} else {
@@ -408,7 +412,8 @@ class Absensi extends CI_Controller
 				'countTelat' => $this->Absensi_model->countTelat($id_pegawai, $tanggal, $vbulan),
 				'identitas' => $this->db->get('user')->row(),
 				'inp' => $this->input->post('tanggal'),
-				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row()
+				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row(),
+				'jam' => $this->Absensi_model->getJamFirst(),
 			];
 		}
 

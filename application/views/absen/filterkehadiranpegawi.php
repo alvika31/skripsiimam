@@ -100,6 +100,9 @@ $nama_lengkap = $namaselect->nama_lengkap;
                     <?php echo $this->session->flashdata('psn'); ?>
 
                     <div class="table-responsive">
+                        <?php
+                        $jam_finish = strtotime($jam->finish);
+                        ?>
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
@@ -109,6 +112,7 @@ $nama_lengkap = $namaselect->nama_lengkap;
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Presensi Masuk</th>
 
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Info Presensi</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Waktu Telat</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                 </tr>
                                 <?php if (empty($fil)) { ?>
@@ -153,6 +157,39 @@ $nama_lengkap = $namaselect->nama_lengkap;
                                                 </td>
                                             <?php }
                                             ?>
+                                            <?php if ($fill->status_absen == 1) { ?>
+                                                <td class="align-middle">
+                                                    <h6 class="mb-0 text-xs"><span class="badge bg-gradient-success">Tepat Waktu</span></h6>
+                                                </td>
+                                            <?php
+                                            } ?>
+                                            <?php if ($fill->status_absen == 0) { ?>
+                                                <?php
+                                                // $jam_absen = strtotime($fill->jam_absen);
+                                                // $jam_finish = strtotime($jam['finish']);
+
+                                                // // Menghitung selisih waktu dalam detik
+                                                // $selisih_waktu = $jam_absen - $jam_finish;
+
+                                                // // Mengonversi selisih waktu ke dalam menit
+                                                // $selisih_waktu_menit = abs(floor($selisih_waktu / 60));
+                                                ?>
+                                                <td class="align-middle">
+                                                    <h6 class="mb-0 text-xs"><span class="badge bg-gradient-danger">
+                                                            <?php $jam_absen = strtotime($fill->jam_absen);
+                                                            $selisih_detik = $jam_absen - $jam_finish;
+
+                                                            // Mengonversi selisih waktu ke format yang lebih bacaan manusia (misalnya "30 menit")
+                                                            $selisih_jam = floor($selisih_detik / 3600); // Menit dalam 1 jam adalah 3600 detik
+                                                            $selisih_menit = floor(($selisih_detik % 3600) / 60); // Sisa detik dalam menit
+
+                                                            ?>
+                                                            <?= $selisih_jam ?> Jam <?= $selisih_menit ?> Menit
+
+                                                        </span></h6>
+                                                </td>
+                                            <?php
+                                            } ?>
 
 
 

@@ -397,4 +397,10 @@ class Absensi_model extends CI_Model
         $firstRow = $query->row();
         return $firstRow;
     }
+
+    function get_jam()
+    {
+        $result = $this->db->get('jam');
+        return $result;
+    }
 }
