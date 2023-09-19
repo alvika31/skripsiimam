@@ -6,8 +6,12 @@
                 <div class="card my-5" style="width:100%; padding-top: 30px;padding-bottom: 30px">
                     <h1 class="fs-5 fw-semibold mb-4">Data Kehadiran: <?= $this->session->nama_lengkap ?></h1>
                     <div class="table-responsive">
+                        <?php
+                        $jam_finish = strtotime($jam->finish);
+                        ?>
                         <table class="table align-items-center mb-0">
                             <thead>
+
 
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.</th>
@@ -15,6 +19,7 @@
 
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Presensi Masuk</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Keterangan</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Waktu Telat</th>
 
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                 </tr>
@@ -54,6 +59,39 @@
                                             </td>
                                         <?php
                                         } ?>
+                                        <?php if ($users->status_absen == 1) { ?>
+                                            <td class="align-middle">
+                                                <h6 class="mb-0 text-xs"><span class="badge bg-gradient-success">Tepat Waktu</span></h6>
+                                            </td>
+                                        <?php
+                                        } ?>
+                                        <?php if ($users->status_absen == 0) { ?>
+                                            <?php
+                                            // $jam_absen = strtotime($users->jam_absen);
+                                            // $jam_finish = strtotime($jam['finish']);
+
+                                            // // Menghitung selisih waktu dalam detik
+                                            // $selisih_waktu = $jam_absen - $jam_finish;
+
+                                            // // Mengonversi selisih waktu ke dalam menit
+                                            // $selisih_waktu_menit = abs(floor($selisih_waktu / 60));
+                                            ?>
+                                            <td class="align-middle">
+                                                <h6 class="mb-0 text-xs"><span class="badge bg-gradient-danger">
+                                                        <?php $jam_absen = strtotime($users->jam_absen);
+                                                        $selisih_detik = $jam_absen - $jam_finish;
+
+                                                        // Mengonversi selisih waktu ke format yang lebih bacaan manusia (misalnya "30 menit")
+                                                        $selisih_jam = floor($selisih_detik / 3600); // Menit dalam 1 jam adalah 3600 detik
+                                                        $selisih_menit = floor(($selisih_detik % 3600) / 60); // Sisa detik dalam menit
+
+                                                        ?>
+                                                        <?= $selisih_jam ?> Jam <?= $selisih_menit ?> Menit
+
+                                                    </span></h6>
+                                            </td>
+                                        <?php
+                                        } ?>
                                         <td class="align-middle">
                                             <a href="<?= site_url('absensi/detailKehadiran_byUser/' . $users->id_absen) ?>" class="btn btn-info btn-sm" style="padding: 10px" data-toggle="tooltip" data-placement="top" title="Detail Presensi">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
@@ -70,6 +108,7 @@
                             </thead>
                         </table>
                         <br>
+
                         <span class="badge badge-info"><?php echo $this->pagination->create_links(); ?></span>
 
                     </div>

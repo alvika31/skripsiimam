@@ -157,15 +157,21 @@ class Absensi extends CI_Controller
 		if ($this->input->post('masuk')) {
 			$config['upload_path']          = './selfie_karyawan/';
 			$config['allowed_types']        = 'gif|jpg|JPG|png|PNG|jpeg|JPEG';
+<<<<<<< HEAD
 			$config['max_size']             = 500;
 			$config['max_width']            = 500;
 			$config['max_height']           = 500;
+=======
+			$config['max_size']             = 10000;
+			$config['max_width']            = 10000;
+			$config['max_height']           = 10000;
+>>>>>>> main
 
 			$this->load->library('upload', $config);
 
 			if (!$this->upload->do_upload('selfie_absen')) {
 				$this->session->set_flashdata('pesanGagal', '<div class="alert alert-danger" role="alert">
-					<strong style="color:white">Gambar Gagal Di Upload</strong>
+					<strong style="color:white">Gambar Gagal Di Upload, Dikarenakan Ukuran Foto Di atas 5mb</strong>
 				</div>');
 				redirect('absensi');
 			} else {
@@ -285,8 +291,10 @@ class Absensi extends CI_Controller
 		$data = array(
 			'title' => 'Data Kehadiran Anda',
 			'user' => $this->Absensi_model->getUserbyId($id_pegawai, $limit, $start)->result(),
-			'i' => $start + 1
+			'i' => $start + 1,
+			'jam' => $this->Absensi_model->getJamFirst(),
 		);
+
 		$this->load->view('layout/header', $data);
 		$this->load->view('layout/sidebar');
 		$this->load->view('absen/datakehadiran', $data);
@@ -337,7 +345,8 @@ class Absensi extends CI_Controller
 			'title' => 'Data Kehadiran Pegawai',
 			'user' => $this->Absensi_model->getUserPegawai($limit, $start)->result(),
 			'i' => $start + 1,
-			'nama' => $this->db->get('user')->result()
+			'nama' => $this->db->get('user')->result(),
+			'jam' => $this->Absensi_model->getJamFirst(),
 		);
 		$this->load->view('layout/header', $data);
 		$this->load->view('layout/sidebar');
@@ -394,7 +403,8 @@ class Absensi extends CI_Controller
 				'fil' => $this->Absensi_model->filter_name($id_pegawai)->result(),
 				'identitas' => $this->db->get('user')->row(),
 				'inp' => $this->input->post('tanggal'),
-				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row()
+				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row(),
+				'jam' => $this->Absensi_model->getJamFirst(),
 
 			];
 		} else {
@@ -408,7 +418,8 @@ class Absensi extends CI_Controller
 				'countTelat' => $this->Absensi_model->countTelat($id_pegawai, $tanggal, $vbulan),
 				'identitas' => $this->db->get('user')->row(),
 				'inp' => $this->input->post('tanggal'),
-				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row()
+				'namaselect' => $this->Absensi_model->select_name_filter($id_pegawai)->row(),
+				'jam' => $this->Absensi_model->getJamFirst(),
 			];
 		}
 

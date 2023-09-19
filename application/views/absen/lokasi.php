@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <link rel="icon" type="image/png" href="<?= base_url() . '/upload/logo.png' ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
       margin: 0;
@@ -77,13 +76,22 @@
         <input type="hidden" name="id_absen">
         <button id="checkLocationButton" type="button" class="btn btn-primary">Cek Lokasi Anda</button>
         <div class="d-flex flex-column mb-3">
-          <label for="" id="label_selfie">Foto Selfie:</label>
+          <label for="" id="label_selfie">Foto Selfie:<br> *Max Upload 10mb</label>
           <input class="" id="selfie" type="file" name="selfie_absen" accept="image/*" capture="camera" id="cameraInput" required disabled>
         </div>
+
         <input type="submit" id="submit" name="masuk" value="Isi Presensi" class="btn btn-danger" disabled />
       </form>
       <p class="font-weight-bold" for="">Jam Presensi:</p>
       <p><?= $jam->start ?> - <?= $jam->finish ?></p>
+      <?php
+      $jamFinish = strtotime($jam->finish);
+      if (time() > $jamFinish) {
+      ?>
+        <div class="alert alert-danger" style="color:white" role="alert">
+          Presensi Telat
+        </div>
+      <?php } ?>
     <?php } ?>
   </div>
 
